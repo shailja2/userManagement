@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 public class UserDTO {
 
     @NotEmpty
+
     private String name;
     @NotEmpty(message = "Email should not be empty!")
     @Email
