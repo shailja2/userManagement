@@ -24,6 +24,7 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public void saveUser(UserDTO userDTO) {
         UserEntity userEntity=userMapper.toEntity(userDTO);
+        userEntity.setRole("Admin");
         userRepository.save(userEntity);
     }
 

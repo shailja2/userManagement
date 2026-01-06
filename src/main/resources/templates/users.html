@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Registration and Login System</title>
@@ -42,11 +42,17 @@ function editUser(button) {
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
+                <li class="nav-item text-white mt-2 me-3" sec:authorize="isAuthenticated()">
+                    Welcome,
+                    <span sec:authentication="name"></span>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" style="display:inline;">
+                        <button type="submit" class="nav-link btn btn-link">
+                            Logout
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -82,7 +88,7 @@ function editUser(button) {
                             th:data-phoneNo="${user.phoneNo}"
                             th:data-usrAddress="${user.usrAddress}"
                             onclick="editUser(this)">Edit</button>
-                    <a th:href="@{'/user/delete/' + ${user.userId}}" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a th:href="@{'/delete/' + ${user.userId}}" onclick="return confirm('Are you sure?')">Delete</a>
                 </td>
             </tr>
         </tbody>
@@ -90,7 +96,7 @@ function editUser(button) {
 </div>
 <div id="editUserModal" style="display:none; position:fixed; background:#ddd; padding:20px;">
     <h3>Edit User</h3>
-    <form th:action="@{/user/update}" method="post">
+    <form th:action="@{/update}" method="post">
         <input type="hidden" id="editUserId" name="userId">
         <label>Name: <input type="text" id="editName" name="name" required></label><br>
         <label>Email: <input type="email" id="editEmail" name="email" required></label><br>

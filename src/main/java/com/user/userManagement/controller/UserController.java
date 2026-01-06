@@ -13,10 +13,21 @@ import java.util.List;
 
 //@RestController
 @Controller
-@RequestMapping ("/user")
+//@RequestMapping ("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @GetMapping("/login")
+    public String loginForm() {
+
+        return "login";
+    }
+    @GetMapping("/")
+    public String defaultHome() {
+        return "index";
+    }
+
     @PostMapping("/register/save")
     //public String saveUser(@RequestBody UserDTO userDTO){
     public String saveUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model){
@@ -42,10 +53,6 @@ public class UserController {
         return "register";
     }
 
-    @GetMapping
-    public List<UserDTO> findAllUsers(){
-        return userService.findAllUsers();
-    }
 
     @GetMapping("/users")
     public String getAllUsers(Model model){
