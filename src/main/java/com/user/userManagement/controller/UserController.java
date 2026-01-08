@@ -13,7 +13,6 @@ import java.util.List;
 
 //@RestController
 @Controller
-//@RequestMapping ("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -23,14 +22,22 @@ public class UserController {
 
         return "login";
     }
+    @GetMapping("/admin")
+    public String adminForm() {
+
+        return "admin";
+    }
     @GetMapping("/")
     public String defaultHome() {
         return "index";
     }
 
     @PostMapping("/register/save")
-    //public String saveUser(@RequestBody UserDTO userDTO){
     public String saveUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model){
+        UserDTO existing = userService.findByEmail(userDTO.getEmail());
+        if (existing != null) {
+            result.rejectValue("email", null, "There is already an account registered with that email");
+        }
         if (result.hasErrors()){
             model.addAttribute("user", userDTO);
             return "register";
@@ -43,7 +50,7 @@ public class UserController {
         }
         userService.saveUser(userDTO);
         //return "User saved successfully!";
-        return "redirect:/user/register?success";
+        return "redirect:/register?success";
     }
 
     @GetMapping("/register")
@@ -58,18 +65,20 @@ public class UserController {
     public String getAllUsers(Model model){
         List<UserDTO> userDTOList = userService.findAllUsers();
         model.addAttribute("users", userDTOList);
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("user", userDTO);
         return "users";
     }
 
     @GetMapping("/delete/{Id}")
     public String deleteUser(@PathVariable Long Id){
         userService.deleteUser(Id);
-        return"redirect:/user/users";
+        return"redirect:/users";
     }
 
     @PostMapping("/update")
-    public String updateUser(@RequestParam Long userId, @RequestParam String name, @RequestParam String pwd, @RequestParam String phoneNo, @RequestParam String usrAddress, @RequestParam String email){
-        userService.updateUser(userId, name, email, pwd, phoneNo, usrAddress);
-        return "redirect:/user/users";
+    public String updateUser(@ModelAttribute("user") UserDTO userDTO){
+        userService.updateUser(userDTO);
+        return "redirect:/users";
     }
 }

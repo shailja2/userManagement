@@ -24,7 +24,6 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public void saveUser(UserDTO userDTO) {
         UserEntity userEntity=userMapper.toEntity(userDTO);
-        userEntity.setRole("Admin");
         userRepository.save(userEntity);
     }
 
@@ -50,17 +49,19 @@ public class UserDAOImpl implements UserDAO{
     }
 
     @Override
-    public void updateUser(Long userId, String name, String email, String pwd, String phoneNo, String usrAddress) {
-        Optional<UserEntity> userEntity=userRepository.findById(userId);
+    public void updateUser(UserDTO userDTO) {
+        Optional<UserEntity> userEntity=userRepository.findById(userDTO.getUserId());
         if(userEntity.isPresent()){
-            UserEntity userEntity1=userEntity.get();
-            userEntity1.setName(name);
-            userEntity1.setEmail(email);
-            userEntity1.setPwd(pwd);
-            userEntity1.setPhoneNo(phoneNo);
-            userEntity1.setUsrAddress(usrAddress);
+            UserEntity userEntity1=userMapper.toEntity(userDTO);
             userRepository.save(userEntity1);
         }
+    }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        return userMapper.toDTO(userEntity);
+
     }
 
 }

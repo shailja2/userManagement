@@ -35,8 +35,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateUser(Long userId, String name, String email, String pwd, String phoneNo, String usrAddress) {
-        userDAO.updateUser(userId,name,email,pwd,phoneNo,usrAddress);
+    public void updateUser(UserDTO userDTO) {
+        userDAO.updateUser(userDTO);
+    }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        return userDAO.findByEmail(email);
     }
 
 }

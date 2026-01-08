@@ -12,5 +12,7 @@ public interface UserService {
 
     void deleteUser(Long Id);
 
-    void updateUser(Long userId, String name, String email, String pwd, String phoneNo, String usrAddress);
+    void updateUser(UserDTO userDTO);
+
+    UserDTO findByEmail(String email);
 }

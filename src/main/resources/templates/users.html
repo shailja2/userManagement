@@ -17,6 +17,7 @@ function editUser(button) {
     let pwd = button.getAttribute("data-pwd");
     let phoneNo = button.getAttribute("data-phoneNo");
     let usrAddress = button.getAttribute("data-usrAddress");
+    let role = button.getAttribute("data-role");
 
     document.getElementById('editUserId').value = userId;
     document.getElementById('editName').value = name;
@@ -24,6 +25,7 @@ function editUser(button) {
     document.getElementById('editPwd').value = pwd;
     document.getElementById('editPhoneNo').value = phoneNo;
     document.getElementById('editUsrAddress').value = usrAddress;
+    document.getElementById('editRole').value = role;
 
     document.getElementById('editUserModal').style.display = 'block';
 }
@@ -54,6 +56,9 @@ function editUser(button) {
                         </button>
                     </form>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/admin}">Admin</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -67,9 +72,9 @@ function editUser(button) {
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Password</th>
                 <th>Phone Number</th>
                 <th>Addresss</th>
+                <th>Role</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -77,9 +82,9 @@ function editUser(button) {
             <tr th:each="user: ${users}">
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.email}"></td>
-                <td th:text="${user.pwd}"></td>
                 <td th:text="${user.phoneNo}"></td>
                 <td th:text="${user.usrAddress}"></td>
+                <td th:text="${user.role}"></td>
                 <td>
                     <button th:data-id="${user.userId}"
                             th:data-name="${user.name}"
@@ -87,6 +92,7 @@ function editUser(button) {
                             th:data-pwd="${user.pwd}"
                             th:data-phoneNo="${user.phoneNo}"
                             th:data-usrAddress="${user.usrAddress}"
+                            th:data-role="${user.role}"
                             onclick="editUser(this)">Edit</button>
                     <a th:href="@{'/delete/' + ${user.userId}}" onclick="return confirm('Are you sure?')">Delete</a>
                 </td>
@@ -96,13 +102,19 @@ function editUser(button) {
 </div>
 <div id="editUserModal" style="display:none; position:fixed; background:#ddd; padding:20px;">
     <h3>Edit User</h3>
-    <form th:action="@{/update}" method="post">
+    <form th:action="@{/update}" method="post" th:object="${user}">
         <input type="hidden" id="editUserId" name="userId">
-        <label>Name: <input type="text" id="editName" name="name" required></label><br>
-        <label>Email: <input type="email" id="editEmail" name="email" required></label><br>
-        <label>Password: <input type="text" id="editPwd" name="pwd" required></label><br>
-        <label>Phone No: <input type="text" id="editPhoneNo" name="phoneNo" required></label><br>
-        <label>Address: <input type="text" id="editUsrAddress" name="usrAddress" required></label><br>
+        <label>Name: <input type="text" id="editName" name="name" th:field="*{name}" required></label><br>
+        <label>Email: <input type="email" id="editEmail" name="email" th:field="*{email}" required></label><br>
+        <input hidden id="editPwd" name="pwd" th:field="*{pwd}" required>
+        <label>Phone No: <input type="text" id="editPhoneNo" name="phoneNo" th:field="*{phoneNo}" required></label><br>
+        <label>Address: <input type="text" id="editUsrAddress" name="usrAddress" th:field="*{usrAddress}" required></label><br>
+        <label>Role: <select class="form-select" id="editRole" name="role" th:field="*{role}">
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+        </label><br>
+
         <button type="submit">Update</button>
         <button type="button" onclick="closeEditModal()">Cancel</button>
     </form>

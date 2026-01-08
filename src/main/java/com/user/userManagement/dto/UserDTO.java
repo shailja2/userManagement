@@ -1,6 +1,7 @@
 package com.user.userManagement.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -13,11 +14,13 @@ public class UserDTO {
     @Email
     private String email;
     @NotEmpty
-    @Size(min = 4, max = 10, message = "Password has tp be minimum 4 characters")
+    @Size(min = 4, max = 10, message = "Password has to be minimum 4 characters")
     private String pwd;
     private String phoneNo;
     private String usrAddress;
     private Long userId;
+    @NotBlank(message = "Role is required")
+    private String role;
 
     public String getName() {
         return name;
@@ -65,5 +68,13 @@ public class UserDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

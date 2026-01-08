@@ -1,6 +1,7 @@
 package com.user.userManagement.dao;
 
 import com.user.userManagement.dto.UserDTO;
+import com.user.userManagement.entity.UserEntity;
 
 import java.util.List;
 
@@ -9,5 +10,6 @@ public interface UserDAO {
     //UserDTO getAllUser();
     List<UserDTO> findAllUsers();
     void deleteUser(Long Id);
-    void updateUser(Long userId, String name, String email, String pwd, String phoneNo, String usrAddress);
+    void updateUser(UserDTO userDTO);
+    UserDTO findByEmail(String email);
 }

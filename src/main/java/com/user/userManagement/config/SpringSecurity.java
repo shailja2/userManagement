@@ -28,6 +28,13 @@ public class SpringSecurity {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/register", "/register/save", "/login").permitAll()
+                        // 👤 USER + ADMIN
+                        .requestMatchers("/users/**")
+                        .hasAnyRole("USER", "ADMIN")
+
+                        // 👑 ADMIN only
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
 
