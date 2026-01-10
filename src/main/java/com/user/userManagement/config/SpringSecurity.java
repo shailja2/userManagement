@@ -35,6 +35,7 @@ public class SpringSecurity {
                         // 👑 ADMIN only
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
 

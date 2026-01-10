@@ -34,7 +34,9 @@ public class UserController {
 
     @PostMapping("/register/save")
     public String saveUser(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model){
+
         UserDTO existing = userService.findByEmail(userDTO.getEmail());
+
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
