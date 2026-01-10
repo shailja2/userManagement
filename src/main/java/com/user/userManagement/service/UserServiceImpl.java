@@ -2,11 +2,13 @@ package com.user.userManagement.service;
 
 import com.user.userManagement.dao.UserDAO;
 import com.user.userManagement.dao.UserRepository;
+import com.user.userManagement.dto.OrderDTO;
 import com.user.userManagement.dto.UserDTO;
 import com.user.userManagement.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -18,6 +20,9 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RestTemplate restTemplate;
     @Override
     public void saveUser(UserDTO userDTO) {
         userDTO.setPwd(passwordEncoder.encode(userDTO.getPwd()));
@@ -42,6 +47,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO findByEmail(String email) {
         return userDAO.findByEmail(email);
+    }
+
+    @Override
+    public void createOrder(OrderDTO orderDTO) {
+        restTemplate.postForObject("http://localhost:8081/orders/createOrder",orderDTO, OrderDTO.class);
     }
 
 }

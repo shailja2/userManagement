@@ -1,5 +1,6 @@
 package com.user.userManagement.controller;
 
+import com.user.userManagement.dto.OrderDTO;
 import com.user.userManagement.dto.UserDTO;
 import com.user.userManagement.service.UserService;
 import jakarta.validation.Valid;
@@ -30,6 +31,12 @@ public class UserController {
     @GetMapping("/")
     public String defaultHome() {
         return "index";
+    }
+
+    @PostMapping("/createOrder")
+    public String createOrder(@RequestBody OrderDTO orderDTO){
+
+        return "Order Saved successfully";
     }
 
     @PostMapping("/register/save")
